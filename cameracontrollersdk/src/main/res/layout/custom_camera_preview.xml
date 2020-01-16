@@ -16,9 +16,15 @@
 
         </FrameLayout>
 
+        <ImageView
+            android:id="@+id/overlay_imageview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/pan_aadhar_overlay">
+        </ImageView>
+
         <android.support.constraint.ConstraintLayout
             android:id="@+id/camera_preview_overlay"
-            android:background="@drawable/pan_aadhar_overlay"
             android:orientation="vertical" android:layout_width="match_parent"
             android:layout_height="match_parent">
 

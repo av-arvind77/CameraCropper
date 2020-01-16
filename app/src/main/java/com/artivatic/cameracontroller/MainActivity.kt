@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         button.setOnClickListener {
-            val chooseSourceDialog = ChooseSourceDialog(this,"voter","")
+            val chooseSourceDialog = ChooseSourceDialog(this,"Pan","")
             chooseSourceDialog.showDialog()
         }
     }
