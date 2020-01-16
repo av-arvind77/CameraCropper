@@ -44,63 +44,68 @@ class CustomCameraPreview : AppCompatActivity() {
         try {
             mCamera = Camera.open()
 
-        val cameraPreview = mCamera?.parameters?.supportedPreviewSizes!!.first()
+            val cameraPreview = mCamera?.parameters?.supportedPreviewSizes!!.first()
+            val pictureSize = mCamera?.parameters?.supportedPictureSizes!!.first()
 
-        val cameraParameters = mCamera?.parameters
-        cameraParameters?.focusMode = Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO
-        mCamera?.parameters = cameraParameters
-        mCamera?.parameters?.setPreviewSize(cameraPreview.width,cameraPreview.height)
+            val cameraParameters = mCamera?.parameters
 
-        cameraSurfaceView = CameraSurfaceView(this,mCamera,0)
-        camera_frame_layout.addView(cameraSurfaceView)
-        }catch (e : java.lang.Exception){
-            Toast.makeText(this,"Provide Camera Permission",Toast.LENGTH_SHORT).show()
-        }
-
-        when {
-            kycType.toLowerCase().contains("full") -> {
-                camera_preview_overlay.background = ContextCompat.getDrawable(this,R.drawable.full_aadhar_overlay)
-                cropX = 0.2
-                cropY = 0.1906
-                cropWidth =0.6
-                cropHeight = 0.6187
-            }
-            kycType.toLowerCase().contains("voter") -> {
-                camera_preview_overlay.background = ContextCompat.getDrawable(this,R.drawable.voter_ovrlay)
-                cropX = 0.25
-                cropY = 0.1870
-                cropWidth =0.5
-                cropHeight = 0.4316
-            }
-            else -> {
-                camera_preview_overlay.background = ContextCompat.getDrawable(this,R.drawable.pan_aadhar_overlay)
-                cropX = 0.1
-                cropY = 0.1667
-                cropWidth =0.8
-                cropHeight = 0.3174
-
-            }
-        }
-
-        document_type.text = "$kycType Capture"
-        message_text_view.text = previewMessage
+            cameraParameters?.focusMode = Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO
+            cameraParameters?.setPreviewSize(cameraPreview.width,cameraPreview.height)
+            cameraParameters?.setPictureSize(pictureSize.width,pictureSize.height)
+            mCamera?.parameters = cameraParameters
 
 
+            Log.d(TAG,"Preview Width ${cameraPreview.width},  Preview Height ${cameraPreview.height}")
 
-        take_picture.setOnClickListener {
-            onClickOrientation = mOrientation
-            try {
-                mCamera?.takePicture(null,null,pictureCallback)
+            cameraSurfaceView = CameraSurfaceView(this,mCamera,0)
+            camera_frame_layout.addView(cameraSurfaceView)
             }catch (e : java.lang.Exception){
-                Toast.makeText(this,"Error while taking picture!.Try Again.",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,"Provide Camera Permission",Toast.LENGTH_SHORT).show()
             }
 
-        }
+            when {
+                kycType.toLowerCase().contains("full") -> {
+                    camera_preview_overlay.background = ContextCompat.getDrawable(this,R.drawable.full_aadhar_overlay)
+                    cropX = 0.2
+                    cropY = 0.1906
+                    cropWidth =0.6
+                    cropHeight = 0.6187
+                }
+                kycType.toLowerCase().contains("voter") -> {
+                    camera_preview_overlay.background = ContextCompat.getDrawable(this,R.drawable.voter_ovrlay)
+                    cropX = 0.25
+                    cropY = 0.1870
+                    cropWidth =0.5
+                    cropHeight = 0.4316
+                }
+                else -> {
+                    camera_preview_overlay.background = ContextCompat.getDrawable(this,R.drawable.pan_aadhar_overlay)
+                    cropX = 0.1
+                    cropY = 0.1667
+                    cropWidth =0.8
+                    cropHeight = 0.3174
+                }
+            }
 
-        close_camera_preview.setOnClickListener {
-            setResult(RESULT_CANCELED,Intent())
-            finish()
-        }
+            document_type.text = "$kycType Capture"
+            message_text_view.text = previewMessage
+
+
+
+            take_picture.setOnClickListener {
+                onClickOrientation = mOrientation
+                try {
+                    mCamera?.takePicture(null,null,pictureCallback)
+                }catch (e : java.lang.Exception){
+                   // Toast.makeText(this,"Error while taking picture!.Try Again.",Toast.LENGTH_SHORT).show()
+                }
+
+            }
+
+            close_camera_preview.setOnClickListener {
+                setResult(RESULT_CANCELED,Intent())
+                finish()
+            }
     }
 
 
@@ -110,6 +115,8 @@ class CustomCameraPreview : AppCompatActivity() {
 
             Toast.makeText(this,"Picture Taken",Toast.LENGTH_SHORT).show()
             var bitmap = BitmapFactory.decodeByteArray(data, 0, data.size)
+
+            Log.d(TAG,"Bitmap width ${bitmap.width} , Bitmap Height ${bitmap.height}")
 
             val file = saveBitmap(bitmap,10)
 
@@ -140,6 +147,9 @@ class CustomCameraPreview : AppCompatActivity() {
                 (height*cropY).toInt(),
                 (width*cropWidth).toInt(),
                 (height*cropHeight).toInt())
+
+
+            Log.d(TAG,"Cropped width ${croppedBitmap.width} , Cropped Height ${croppedBitmap.height}")
 
 
             val rotatedfile = saveBitmap(croppedBitmap,100)

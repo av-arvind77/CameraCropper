@@ -12,7 +12,7 @@ buildscript {
         classpath "com.github.stefma:bintray-release:master-SNAPSHOT"
     }
 }
-version = "1.0.6"
+version = "1.0.8"
 group = "ai.artivatic"
 androidArtifact {
     artifactId = "CameraControllerSdk"
