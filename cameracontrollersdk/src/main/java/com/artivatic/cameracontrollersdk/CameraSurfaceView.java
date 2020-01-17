@@ -25,7 +25,6 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
         surfaceHolder = getHolder();
 //        surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
         surfaceHolder.addCallback(this);
-
     }
 
     @Override
@@ -33,7 +32,6 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
         try {
             camera.setPreviewDisplay(holder);
             setCameraDisplayOrientation((Activity) context,cameraType,camera);
-
             camera.startPreview();
         } catch (IOException e) {
             Log.d("tag", "Error setting camera preview: " + e.getMessage());

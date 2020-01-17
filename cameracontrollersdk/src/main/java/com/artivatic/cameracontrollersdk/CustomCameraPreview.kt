@@ -41,7 +41,7 @@ class CustomCameraPreview : AppCompatActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
         try {
-            mCamera = Camera.open()
+            mCamera = Camera.open(Camera.CameraInfo.CAMERA_FACING_BACK)
         }catch (e : java.lang.Exception){
             Toast.makeText(this,e.message,Toast.LENGTH_SHORT).show()
         }
@@ -59,7 +59,7 @@ class CustomCameraPreview : AppCompatActivity() {
 
             Log.d(TAG,"Preview Width ${cameraPreview.width},  Preview Height ${cameraPreview.height}")
 
-            cameraSurfaceView = CameraSurfaceView(this,mCamera,0)
+            cameraSurfaceView = CameraSurfaceView(this,mCamera,Camera.CameraInfo.CAMERA_FACING_BACK)
             camera_frame_layout.addView(cameraSurfaceView)
         }catch ( e :java.lang.Exception){
             Toast.makeText(this,e.message,Toast.LENGTH_LONG).show()
@@ -193,6 +193,12 @@ class CustomCameraPreview : AppCompatActivity() {
             e.printStackTrace()
             bitmap
         }
+    }
+
+
+    override fun onPause() {
+        super.onPause()
+        mCamera?.release()
     }
 
 }
