@@ -1,6 +1,6 @@
 package com.artivatic.cameracontrollersdk
 
-import android.Manifest
+import  android.Manifest
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
